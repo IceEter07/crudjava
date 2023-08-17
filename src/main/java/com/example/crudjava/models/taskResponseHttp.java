@@ -10,7 +10,7 @@ import lombok.Setter;
 public class taskResponseHttp {
 
     @Getter @Setter
-    private Long id;
+    private Integer id;
 
     @Getter @Setter
     private String body;

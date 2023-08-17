@@ -4,7 +4,6 @@ import com.example.crudjava.models.tareas;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,21 +19,17 @@ public class tareaDaoImp implements tareaDao{
     private EntityManager entityManager;
 
     //Obtener tareas
-    @Override
     public List<tareas> getTareas() {
         String query = "From tareas";
         return entityManager.createQuery(query).getResultList();
     }
-    /*public ResponseEntity<List<tareas>> getTareas() {
-        return new ResponseEntity<>();
-    }*/
-
 
 
     //Registrar tarea
     @Override
-    public void registrarTarea(tareas task) {
+    public String registrarTarea(tareas task) {
         entityManager.persist(task);
+        return null;
     }
 
     //Eliminar tarea
