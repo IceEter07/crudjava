@@ -9,4 +9,8 @@ public interface tareaDao {
 
     void registrarTarea(tareas task);
 
+    void eliminarTarea(Long id);
+
+    void actualizarTarea(tareas task);
+
 }

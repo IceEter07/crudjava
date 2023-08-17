@@ -27,4 +27,20 @@ public class tareaDaoImp implements tareaDao{
     public void registrarTarea(tareas task) {
         entityManager.persist(task);
     }
+
+    @Override
+    public void eliminarTarea(Long id) {
+        tareas task = entityManager.find(tareas.class, id);
+        entityManager.remove(task);
+    }
+
+    @Override
+    public void actualizarTarea(tareas task) {
+        /*Query query = entityManager.createNativeQuery("UPDATE tareas SET descripcion = :newDescription, estado = :newStatus WHERE id = :id");
+            query.setParameter("newDescription", task.getDescripcion());
+            query.setParameter("newStatus" , task.getEstatus());
+            query.setParameter("id", id);
+            query.executeUpdate();*/
+        entityManager.merge(task);
+    }
 }
