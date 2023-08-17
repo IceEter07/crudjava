@@ -17,7 +17,7 @@ public class tareas {
     @Getter @Setter @Column(name = "descripcion")
     private String descripcion;
 
-    @Getter @Setter @Column(name = "estatus")
+    @Getter @Setter @Column(name = "estado")
     private String estatus;
 }
 

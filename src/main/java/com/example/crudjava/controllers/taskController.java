@@ -1,20 +1,29 @@
 package com.example.crudjava.controllers;
 
+import com.example.crudjava.dao.tareaDao;
 import com.example.crudjava.models.tareas;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/tareas")
 public class taskController {
 
+    @Autowired
+    private tareaDao taskDao;
+
+    //Obtener las tareas
     @GetMapping
-    public tareas getTask(){
-        tareas task = new tareas();
-        task.setId(1L);
-        task.setDescripcion("Hlalallalasf");
-        task.setEstatus("NASHDSADF");
-        return task;
+    public List<tareas> getTask(){
+        return taskDao.getTareas();
+    }
+
+    //Crear tareas
+    //RequestBody sirve para deserializar un objeto a partir del cuerpo de la petición
+    @PostMapping(consumes = {"*/*"})
+    public void registrarTarea(@RequestBody tareas task){
+        taskDao.registrarTarea(task);
     }
 }
