@@ -22,13 +22,6 @@ public class tareaDaoImp implements tareaDao{
     @PersistenceContext
     private EntityManager entityManager;
 
-    //Obtener tareas
-/*    public List<tareas> getTareas() {
-        String query = "From tareas";
-        return entityManager.createQuery(query).getResultList();
-    }*/
-
-
     @Override
     public ResponseEntity getTareas() {
         try{
