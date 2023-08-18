@@ -23,11 +23,23 @@ public class tareaDaoImp implements tareaDao{
     private EntityManager entityManager;
 
     //Obtener tareas
-    public List<tareas> getTareas() {
+/*    public List<tareas> getTareas() {
         String query = "From tareas";
         return entityManager.createQuery(query).getResultList();
-    }
+    }*/
 
+
+    @Override
+    public ResponseEntity getTareas() {
+        try{
+            String query = "From tareas";
+            List<tareas> tareas = entityManager.createQuery(query).getResultList();
+            //Se retorna una respuesta y se manda el cuerpo con la consulta realizada
+            return ResponseEntity.ok(tareas);
+        } catch (taskException ex){
+            throw new taskException("501", HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrió un error en la consulta");
+        }
+    }
 
     //Registrar tarea
     @Override
@@ -47,19 +59,48 @@ public class tareaDaoImp implements tareaDao{
 
     //Eliminar tarea
     @Override
-    public void eliminarTarea(Long id) {
+    public ResponseEntity eliminarTarea(Long id) {
         tareas task = entityManager.find(tareas.class, id);
+        if(task == null){
+            throw new taskException("404", HttpStatus.NOT_FOUND, "La tarea que se quiere eliminar no existe");
+        }
+
+        try{
         entityManager.remove(task);
+        return new ResponseEntity("La tarea fue eliminada con éxito", HttpStatus.OK);
+        }
+
+        //El catch no funciona como se desea. Aunque de momento se dejará por cualquier cosa y para su posterior modificación
+        catch (taskException ex){
+            throw new taskException("400", HttpStatus.BAD_REQUEST, "Los datos que se introducidos no son válidos");
+        }
     }
 
     //Actualizar tarea
     @Override
-    public void actualizarTarea(tareas task) {
-        /*Query query = entityManager.createNativeQuery("UPDATE tareas SET descripcion = :newDescription, estado = :newStatus WHERE id = :id");
-            query.setParameter("newDescription", task.getDescripcion());
-            query.setParameter("newStatus" , task.getEstatus());
-            query.setParameter("id", id);
-            query.executeUpdate();*/
-        entityManager.merge(task);
+    public ResponseEntity actualizarTarea(Long id, tareas task) {
+        //Buscar sí existe el registro que se quiere actualizar
+        tareas query = entityManager.find(tareas.class, id);
+
+        if(query != null){
+            //Fue necesario especificar los valores que se querían actualizar incluyendo el ID, porque de no mandar dicho ID
+            //En lugar de actualizar un campo se creaba uno nuevo
+            task.setId(id);
+            task.setDescripcion(task.getDescripcion());
+            task.setEstatus(task.getEstatus());
+            entityManager.merge(task);
+            return new ResponseEntity("La tarea fue actualizada con éxito", HttpStatus.OK);
+        }
+        if (task.getDescripcion().equals("") || task.getDescripcion() == null){
+            throw new taskException("400", HttpStatus.BAD_REQUEST, "La descripción es requerida");
+        }
+        if (task.getEstatus().equals("") || task.getEstatus() == null){
+            throw new taskException("400", HttpStatus.BAD_REQUEST, "El estado de la tarea es requerido");
+        }
+        if (task.getId() != null){
+            throw new taskException("400", HttpStatus.BAD_REQUEST, "No puedes ingresar un ID");
+        }
+
+        throw new taskException("404", HttpStatus.NOT_FOUND, "La tarea que se quiere actualizar no existe");
     }
 }

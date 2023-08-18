@@ -21,7 +21,10 @@ public class taskController {
 
     //Obtener las tareas
     @GetMapping
-    public List<tareas> getTask(){
+//    public List<tareas> getTask(){
+//        return taskDao.getTareas();
+//    }
+    public ResponseEntity<?> getTask(){
         return taskDao.getTareas();
     }
 
@@ -35,14 +38,14 @@ public class taskController {
     //Eliminar tareas
     //@PathVariable sirve para configurar variables dentro de segmentos de la URL
     @DeleteMapping(value = "/{id}")
-    public void eliminarTarea(@PathVariable("id") Long id){
+    public ResponseEntity eliminarTarea(@PathVariable("id") Long id){
 
-        taskDao.eliminarTarea(id);
+        return taskDao.eliminarTarea(id);
     }
 
     //Editar tareas
-    @PutMapping
-    public void actualizarTarea(@RequestBody tareas task){
-        taskDao.actualizarTarea(task);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity actualizarTarea(@PathVariable("id") Long id, @RequestBody tareas task){
+        return taskDao.actualizarTarea(id, task);
     }
 }

@@ -6,12 +6,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface tareaDao {
-    List<tareas> getTareas();
+//    List<tareas> getTareas();
+    ResponseEntity getTareas();
 
     ResponseEntity registrarTarea(tareas task);
 
-    void eliminarTarea(Long id);
+    ResponseEntity eliminarTarea(Long id);
 
-    void actualizarTarea(tareas task);
+    ResponseEntity actualizarTarea(Long id, tareas task);
 
 }
