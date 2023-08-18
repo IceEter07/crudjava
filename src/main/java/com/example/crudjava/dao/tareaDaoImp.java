@@ -1,9 +1,13 @@
 package com.example.crudjava.dao;
 
+import com.example.crudjava.exception.taskException;
 import com.example.crudjava.models.tareas;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +31,18 @@ public class tareaDaoImp implements tareaDao{
 
     //Registrar tarea
     @Override
-    public String registrarTarea(tareas task) {
+    public ResponseEntity registrarTarea(tareas task) {
+        if (task.getDescripcion().equals("") || task.getDescripcion() == null){
+            throw new taskException("400", HttpStatus.BAD_REQUEST, "La descripción es requerida");
+        }
+        if (task.getEstatus().equals("") || task.getEstatus() == null){
+            throw new taskException("400", HttpStatus.BAD_REQUEST, "El estado de la tarea es requerido");
+        }
+        if (task.getId() != null){
+            throw new taskException("400", HttpStatus.BAD_REQUEST, "No puedes ingresar un ID");
+        }
         entityManager.persist(task);
-        return null;
+        return new ResponseEntity("La tarea fue registrada con éxito", HttpStatus.CREATED);
     }
 
     //Eliminar tarea
