@@ -75,14 +75,8 @@ public class tareaDaoImp implements tareaDao{
         //Buscar sí existe el registro que se quiere actualizar
         tareas query = entityManager.find(tareas.class, id);
 
-        if(query != null){
-            //Fue necesario especificar los valores que se querían actualizar incluyendo el ID, porque de no mandar dicho ID
-            //En lugar de actualizar un campo se creaba uno nuevo
-            task.setId(id);
-            task.setDescripcion(task.getDescripcion());
-            task.setEstatus(task.getEstatus());
-            entityManager.merge(task);
-            return new ResponseEntity("La tarea fue actualizada con éxito", HttpStatus.OK);
+        if(query == null){
+        throw new taskException("404", HttpStatus.NOT_FOUND, "La tarea que se quiere actualizar no existe");
         }
         if (task.getDescripcion().equals("") || task.getDescripcion() == null){
             throw new taskException("400", HttpStatus.BAD_REQUEST, "La descripción es requerida");
@@ -94,6 +88,12 @@ public class tareaDaoImp implements tareaDao{
             throw new taskException("400", HttpStatus.BAD_REQUEST, "No puedes ingresar un ID");
         }
 
-        throw new taskException("404", HttpStatus.NOT_FOUND, "La tarea que se quiere actualizar no existe");
+        //Fue necesario especificar los valores que se querían actualizar incluyendo el ID, porque de no mandar dicho ID
+        //En lugar de actualizar un campo se creaba uno nuevo
+        task.setId(id);
+        task.setDescripcion(task.getDescripcion());
+        task.setEstatus(task.getEstatus());
+        entityManager.merge(task);
+        return new ResponseEntity("La tarea fue actualizada con éxito", HttpStatus.OK);
     }
 }
