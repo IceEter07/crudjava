@@ -5,8 +5,10 @@ documentación y demás información de spring boot, con el objetivo de conocer 
 el uso del framework.
 
 Una vez que tuve los conocimientos básicos pude comenzar a trabajar con el
-pequeño proyecto de diagnostico. Enseguida enumero punto por punto lo que hice,
-incluyendo por supuesto las dificultades que se presentaron.
+pequeño proyecto de diagnóstico.
+
+A continuación, listaré punto por punto lo que hice, incluyendo por supuesto las dificultades que se presentaron.
+
 
 1. Creación de un microservicio de tareas (CRUD): esta fue la parte "simple" del proyecto,
 a pesar de no tener experiencia trabajando con API REST pude sobrellevarlo muy bien con el
